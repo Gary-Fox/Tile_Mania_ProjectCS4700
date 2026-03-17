@@ -26,6 +26,7 @@ public class Arrow : MonoBehaviour
         // Flip sprite if going left
         if (dir < 0)
             GetComponent<SpriteRenderer>().flipX = true;
+        
     }
 
     void OnTriggerEnter2D(Collider2D other)

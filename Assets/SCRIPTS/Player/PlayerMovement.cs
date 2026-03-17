@@ -21,6 +21,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Climbing")]
     [SerializeField] float climbSpeed = 5f;
     [SerializeField] LayerMask ladderLayer;
+    bool isRight = true;
 
     // ─── Private Variables ──────────────────────────────────────────────
     Rigidbody2D rb;
@@ -54,7 +55,7 @@ public class PlayerMovement : MonoBehaviour
 
         //Tempoary debugging
         CheckGrounded();
-        Debug.Log($"Grounded: {isGrounded}");
+        //Debug.Log($"Grounded: {isGrounded}");
     }
 
     void FixedUpdate()
@@ -91,6 +92,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
+            AudioManager.Instance?.PlayJump();
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
         }
     }
@@ -138,10 +140,18 @@ public class PlayerMovement : MonoBehaviour
     // ─── Sprite Flip ────────────────────────────────────────────────────
     void FlipSprite()
     {
+        //Flipping the entire object to flip firepoint in tandem
         if (horizontalInput > 0)
-            spriteRenderer.flipX = false;
+        {
+            transform.localScale = new Vector3(1f, 1f, 1f);
+            isRight = true;
+        }
         else if (horizontalInput < 0)
-            spriteRenderer.flipX = true;
+        {
+            transform.localScale = new Vector3(-1f, 1f, 1f);
+            isRight = false;
+            //spriteRenderer.flipX = true; ;
+        }
     }
 
     // ─── Animator ────────────────────────────────────────────────────────
@@ -162,11 +172,12 @@ public class PlayerMovement : MonoBehaviour
         GetComponent<Collider2D>().enabled = false;
     }
 
-    //Temporary debugging fro jump
-    void OnDrawGizmosSelected()
+    //Temporary debugging for jump
+   /* void OnDrawGizmosSelected()
     {
         if (!groundCheck) return;
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
     }
+   */
 }

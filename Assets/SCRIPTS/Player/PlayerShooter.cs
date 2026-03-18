@@ -31,7 +31,6 @@ public class PlayerShooter : MonoBehaviour
 
         GameObject arrow = Instantiate(arrowPrefab, firePoint.position, Quaternion.identity);
         arrow.GetComponent<Arrow>().SetDirection(direction);
-        AudioManager.Instance?.PlayShoot();
 
         // Optional: play shoot animation
         GetComponent<Animator>()?.SetTrigger("shoot");

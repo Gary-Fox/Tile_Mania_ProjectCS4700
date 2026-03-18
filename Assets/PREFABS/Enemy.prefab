@@ -31,7 +31,7 @@ Transform:
   m_GameObject: {fileID: 2232627804826695495}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 13.44, y: 14.84, z: 0}
+  m_LocalPosition: {x: 13.37, y: 14.97, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -157,8 +157,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.0045681, y: -0.17588902}
-  m_Size: {x: 0.62791824, y: 0.64822197}
+  m_Offset: {x: 0.0045681, y: -0.18399572}
+  m_Size: {x: 0.62791824, y: 0.6644354}
   m_Direction: 0
 --- !u!95 &4859960881471854734
 Animator:
@@ -195,13 +195,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyPatrol
   moveSpeed: 3
-  leftEdge: {fileID: 0}
-  rightEdge: {fileID: 0}
-  groundDetect: {fileID: 0}
-  detectRadius: 0.2
+  leftEdge: {fileID: 77174486730476838}
+  rightEdge: {fileID: 3388781829691954661}
+  groundDetect: {fileID: 479464169342542419}
+  detectRadius: 0.05
   groundLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 8
 --- !u!114 &4904746305894003169
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -616,7 +616,7 @@ Transform:
   m_GameObject: {fileID: 8559481386565444823}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 13.36, y: 14, z: 0}
+  m_LocalPosition: {x: 13.37, y: 13.01, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

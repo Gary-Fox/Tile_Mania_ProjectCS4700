@@ -2,7 +2,6 @@
 
 public class EnemyPatrol : MonoBehaviour
 {
-    // ─── Settings ────────────────────────────────────────────────────────
     [Header("Patrol")]
     [SerializeField] float moveSpeed = 3f;
     [SerializeField] Transform leftEdge;
@@ -13,7 +12,6 @@ public class EnemyPatrol : MonoBehaviour
     [SerializeField] float detectRadius = 0.2f;
     [SerializeField] LayerMask groundLayer;
 
-    // ─── State ───────────────────────────────────────────────────────────
     Rigidbody2D rb;
     SpriteRenderer spriteRenderer;
     Animator animator;
@@ -21,7 +19,8 @@ public class EnemyPatrol : MonoBehaviour
     bool movingRight = true;
     bool isAlive = true;
 
-    // ─── Lifecycle ───────────────────────────────────────────────────────
+    float turnCooldown = 0f;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -29,53 +28,75 @@ public class EnemyPatrol : MonoBehaviour
         animator = GetComponent<Animator>();
     }
 
-    void Update()
-    {
-        if (!isAlive) return;
-        CheckEdges();
-    }
-
     void FixedUpdate()
     {
         if (!isAlive) return;
+
+        if (turnCooldown > 0f)
+            turnCooldown -= Time.fixedDeltaTime;
+        bool isRunning = true;
+        animator.SetBool("isRunning", isRunning);
+
+        CheckEdges();
         Patrol();
     }
 
-    // ─── Patrol Logic ────────────────────────────────────────────────────
     void Patrol()
     {
         float direction = movingRight ? 1f : -1f;
         rb.linearVelocity = new Vector2(direction * moveSpeed, rb.linearVelocity.y);
         spriteRenderer.flipX = !movingRight;
+
     }
 
     void CheckEdges()
     {
-        // Turn around at patrol waypoints
-        if (movingRight && transform.position.x >= rightEdge.position.x)
-            TurnAround();
-        else if (!movingRight && transform.position.x <= leftEdge.position.x)
-            TurnAround();
+        if (turnCooldown > 0f) return;
 
-        // Turn around at ledge (no ground detected below)
+        if (movingRight && transform.position.x >= rightEdge.position.x)
+        {
+            TurnAround();
+            return;
+        }
+
+        if (!movingRight && transform.position.x <= leftEdge.position.x)
+        {
+            TurnAround();
+            return;
+        }
+
         bool groundAhead = Physics2D.OverlapCircle(groundDetect.position, detectRadius, groundLayer);
         if (!groundAhead)
+        {
             TurnAround();
+        }
     }
 
     void TurnAround()
     {
         movingRight = !movingRight;
+        turnCooldown = 0.1f;
     }
 
-    // ─── Death ───────────────────────────────────────────────────────────
-    public void Die()
+// ─── Death ───────────────────────────────────────────────────────────
+public void Die()
     {
         isAlive = false;
+        bool dead = true;
+        bool isRunning = false;
+        animator.SetBool("isRunning", isRunning);
         rb.linearVelocity = Vector2.zero;
         rb.gravityScale = 0f;
         GetComponent<Collider2D>().enabled = false;
-        animator.SetTrigger("die");
+        animator.SetBool("die", dead);
         Destroy(gameObject, 0.8f);
+    }
+
+    //Debugging : visualize ground detection radius
+    void OnDrawGizmosSelected()
+    {
+        if (groundDetect == null) return;
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(groundDetect.position, detectRadius);
     }
 }

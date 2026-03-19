@@ -67,6 +67,7 @@ public class PlayerHealth : MonoBehaviour
 
         if (currentHealth <= 0)
         {
+            AudioManager.Instance?.PlayDeath();
             Die();
             return;
         }

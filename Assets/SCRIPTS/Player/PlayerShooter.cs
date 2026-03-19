@@ -31,6 +31,7 @@ public class PlayerShooter : MonoBehaviour
         Vector3 spawnOffset = new Vector3(direction * 0.5f, 0.2f, 0f);
         GameObject arrow = Instantiate(arrowPrefab, transform.position + spawnOffset, Quaternion.identity);
 
+        AudioManager.Instance?.PlayShoot();
         arrow.GetComponent<Arrow>().SetDirection(direction);
 
         GetComponent<Animator>()?.SetTrigger("shoot");

@@ -28,6 +28,8 @@ public class EnemyPatrol : MonoBehaviour
         animator = GetComponent<Animator>();
     }
 
+    void Update() { }
+
     void FixedUpdate()
     {
         if (!isAlive) return;

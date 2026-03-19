@@ -1,0 +1,22 @@
+using UnityEngine;
+using FMODUnity;
+
+public class GlobalAudioState : MonoBehaviour
+{
+    // Call when player health changes (0.0 = critical, 1.0 = full health)
+    public void OnHealthChanged(float normalizedHealth)
+    {
+        RuntimeManager.StudioSystem.setParameterByName("PlayerHealth", normalizedHealth);
+    }
+
+    // Trigger the underwater audio filter snapshot
+    public void EnterWater()
+    {
+        RuntimeManager.StudioSystem.setParameterByName("IsUnderwater", 1f);
+    }
+
+    public void ExitWater()
+    {
+        RuntimeManager.StudioSystem.setParameterByName("IsUnderwater", 0f);
+    }
+}

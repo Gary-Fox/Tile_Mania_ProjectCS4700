@@ -26,16 +26,14 @@ public class PlayerShooter : MonoBehaviour
 
     void Shoot()
     {
-        // Determine direction based on which way the player is facing
-        float direction = spriteRenderer.flipX ? -1f : 1f;
+        float direction = transform.localScale.x < 0 ? -1f : 1f;
 
-        //GameObject arrow = Instantiate(arrowPrefab, firePoint.position, Quaternion.identity);
-
-        Vector3 spawnOffset = new Vector3(spriteRenderer.flipX ? -0.5f : 0.5f, 0.2f, 0f);
+        Vector3 spawnOffset = new Vector3(direction * 0.5f, 0.2f, 0f);
         GameObject arrow = Instantiate(arrowPrefab, transform.position + spawnOffset, Quaternion.identity);
+
         arrow.GetComponent<Arrow>().SetDirection(direction);
 
-        // Optional: play shoot animation
         GetComponent<Animator>()?.SetTrigger("shoot");
     }
+
 }

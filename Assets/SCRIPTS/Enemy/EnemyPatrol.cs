@@ -71,15 +71,19 @@ public class EnemyPatrol : MonoBehaviour
             TurnAround();
         }
     }
-
     void TurnAround()
     {
         movingRight = !movingRight;
         turnCooldown = 0.1f;
+
+        // Flip ground detect position
+        Vector3 pos = groundDetect.localPosition;
+        pos.x *= -1;
+        groundDetect.localPosition = pos;
     }
 
-// ─── Death ───────────────────────────────────────────────────────────
-public void Die()
+    // ─── Death ───────────────────────────────────────────────────────────
+    public void Die()
     {
         isAlive = false;
         bool dead = true;

@@ -7,41 +7,37 @@ public class Arrow : MonoBehaviour
     [SerializeField] int damage = 1;
 
     Rigidbody2D rb;
-    float direction = 1f; // 1 = right, -1 = left
+    SpriteRenderer sr;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        sr = GetComponent<SpriteRenderer>();
     }
 
     void Start()
     {
-        rb.linearVelocity = new Vector2(direction * speed, 0f);
-        Destroy(gameObject, maxLifetime);
+        //Destroy(gameObject, maxLifetime);
     }
 
     public void SetDirection(float dir)
     {
-        direction = dir;
-        // Flip sprite if going left
-        if (dir < 0)
-            GetComponent<SpriteRenderer>().flipX = true;
+        rb.linearVelocity = new Vector2(dir * speed, 0f);
+        sr.flipX = dir < 0f;
     }
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        // Hit enemy
-        EnemyPatrol enemy = other.GetComponent<EnemyPatrol>();
+        //EnemyPatrol enemy = other.GetComponent<EnemyPatrol>();
+        EnemyPatrol enemy = other.GetComponentInParent<EnemyPatrol>();
         if (enemy != null)
         {
             enemy.Die();
-            //CameraShake.Instance?.Shake(1f, 0.15f);
             Destroy(gameObject);
             return;
         }
 
-        // Hit ground/wall
-        if (other.gameObject.layer == LayerMask.NameToLayer("Ground"))
+        if (other.gameObject.layer == LayerMask.NameToLayer("groundLayer"))
         {
             Destroy(gameObject);
         }

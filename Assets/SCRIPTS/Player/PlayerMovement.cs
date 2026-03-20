@@ -133,8 +133,8 @@ public class PlayerMovement : MonoBehaviour
         if (!isOnLadder) return;
 
         float verticalInput = Input.GetAxisRaw("Vertical");
+        rb.gravityScale = 0f;
         rb.linearVelocity = new Vector2(rb.linearVelocity.x, verticalInput * climbSpeed);
-        rb.gravityScale = (Mathf.Abs(verticalInput) > 0) ? 0f : originalGravity;
     }
 
     // ─── Sprite Flip ────────────────────────────────────────────────────

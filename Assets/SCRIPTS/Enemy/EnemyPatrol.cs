@@ -12,6 +12,11 @@ public class EnemyPatrol : MonoBehaviour
     [SerializeField] float detectRadius = 0.2f;
     [SerializeField] LayerMask groundLayer;
 
+    [Header("Additional settings")]
+    [SerializeField] bool isInvincible = false;
+    [SerializeField] int health = 1;
+    [SerializeField] bool isFlying = false;
+
     Rigidbody2D rb;
     SpriteRenderer spriteRenderer;
     Animator animator;
@@ -67,11 +72,15 @@ public class EnemyPatrol : MonoBehaviour
             return;
         }
 
-        bool groundAhead = Physics2D.OverlapCircle(groundDetect.position, detectRadius, groundLayer);
-        if (!groundAhead)
+        if (!isFlying)
         {
-            TurnAround();
+            bool groundAhead = Physics2D.OverlapCircle(groundDetect.position, detectRadius, groundLayer);
+            if (!groundAhead)
+            {
+                TurnAround();
+            }
         }
+
     }
     void TurnAround()
     {
@@ -87,14 +96,21 @@ public class EnemyPatrol : MonoBehaviour
     // ─── Death ───────────────────────────────────────────────────────────
     public void Die()
     {
+        if (isInvincible) return;
+        if (health > 1)
+        {
+            health--;
+            return;
+        }
         isAlive = false;
         bool dead = true;
         bool isRunning = false;
         animator.SetBool("isRunning", isRunning);
+        animator.SetBool("die", dead);
         rb.linearVelocity = Vector2.zero;
         rb.gravityScale = 0f;
         GetComponent<Collider2D>().enabled = false;
-        animator.SetBool("die", dead);
+        
         Destroy(gameObject, 0.8f);
     }
 

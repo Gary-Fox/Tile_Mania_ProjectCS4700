@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Unity.VisualScripting;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class PlayerHealth : MonoBehaviour
@@ -7,6 +8,7 @@ public class PlayerHealth : MonoBehaviour
     [Header("Health")]
     [SerializeField] int maxHealth = 3;
     [SerializeField] float invincibilityDuration = 1.5f;
+    [SerializeField] LayerMask deathLayer;
 
     [Header("UI")]
     [SerializeField] Image[] heartImages;      // Array of heart UI images
@@ -97,6 +99,14 @@ public class PlayerHealth : MonoBehaviour
         for (int i = 0; i < heartImages.Length; i++)
         {
             heartImages[i].sprite = (i < currentHealth) ? fullHeart : emptyHeart;
+        }
+    }
+
+    void OnTriggerExit2D(Collider2D other)
+    {
+        if (((1 << other.gameObject.layer) & deathLayer) != 0)
+        {
+            Die();
         }
     }
 }
